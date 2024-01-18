@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Converter</title>
+</head>
+<body>
+
+  <h2>JSON Converter</h2>
+
+  <form id="jsonForm">
+    <label for="userInput">User Input:</label>
+    <input type="text" id="userInput" required><br>
+
+    <label for="systemInput">System Input:</label>
+    <input type="text" id="systemInput" required><br>
+
+    <label for="filenameInput">Filename for JSON:</label>
+    <input type="text" id="filenameInput" required><br>
+
+    <button type="button" onclick="convertToJSON()">Convert to JSON</button>
+  </form>
+
+  <script>
+    function convertToJSON() {
+      // Get input values
+      var userInput = document.getElementById('userInput').value;
+      var systemInput = document.getElementById('systemInput').value;
+      var filenameInput = document.getElementById('filenameInput').value;
+
+      // Create JSON object
+      var jsonData = {
+        "messages": [
+          {"role": "user", "content": userInput},
+          {"role": "system", "content": systemInput}
+        ]
+      };
+
+      // Convert JSON to string
+      var jsonString = JSON.stringify(jsonData, null, 2);
+
+      // Create a Blob with the JSON data
+      var blob = new Blob([jsonString], { type: 'application/json' });
+
+      // Create a link element to download the JSON file
+      var a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = filenameInput + '.json'; // Append '.json' to the specified filename
+      a.textContent = 'Download JSON';
+
+      // Append the link to the body and trigger the click event
+      document.body.appendChild(a);
+      a.click();
+
+      // Remove the link from the body
+      document.body.removeChild(a);
+    }
+  </script>
+
+</body>
+</html>
